@@ -1,3 +1,7 @@
 # Node modules
 node_modules/
 .DS_Store
+
+#playground
+.bak_react
+/dist

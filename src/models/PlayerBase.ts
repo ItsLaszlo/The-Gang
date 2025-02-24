@@ -1,23 +1,34 @@
 import { Player } from './Player'
 
 export class PlayerBase {
-  private ids: Set<number>;
-  private listOfPlayers: Player[];
+  private idCounter: number;
+  public listOfPlayers: Player[];
 
-  constructor() {
-    this.ids = new Set()
-    this.listOfPlayers = []
+  constructor(numberOfPlayers: number) {
+    this.idCounter = 0
+    this.listOfPlayers = this.addPlayers(numberOfPlayers)
+    // board
   }
 
-  addPlayer(newPlayer: Player): void {
-    this.listOfPlayers.push(newPlayer)
+  addPlayers(numberOfPlayers: number): Player[] {
+    let listOfPlayers = []
+    for (let i = 0; i < numberOfPlayers; i++) {
+      let currentPlayer = new Player(`Player ${i}`)
+      currentPlayer.setPlayerID(this.generatePlayerId())
+      listOfPlayers.push(currentPlayer)
+    }
+    return listOfPlayers
   }
 
-  removePlayer(): Player {
-
+  generatePlayerId(): number {
+    return this.idCounter++;
   }
 
-  getAllPlayer() { }
+  removePlayer() { }
+
+  getAllPlayer(): Player[] {
+    return this.listOfPlayers
+  }
 
 
 

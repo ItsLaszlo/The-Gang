@@ -1,7 +1,10 @@
-import { Card, Suit, Rank } from './Card'
+import { Suit, Rank } from './Card'
+import { PokerCard } from './PokerCard'
+
+// enum DeckType { 'poker' }
 
 export class Deck {
-  private deck: Card[];
+  private deck: PokerCard[];
 
 
   constructor() {
@@ -9,16 +12,10 @@ export class Deck {
     this.shuffle()
   };
 
-  private generateDeck(): Card[] {
+  private generateDeck(): PokerCard[] {
     const suits: Suit[] = ["Hearts", "Diamonds", "Clubs", "Spades"];
     const ranks: Rank[] = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
-    const deck: Card[] = [];
-
-    for (const suit of suits) {
-      for (const rank of ranks) {
-        deck.push(new Card(rank, suit));
-      }
-    }
+    const deck: PokerCard[] = ranks.flatMap((rank) => suits.map((suit) => new PokerCard(rank, suit)));
     return deck;
   };
 
@@ -34,8 +31,8 @@ export class Deck {
     }
   };
 
-  dealCard(cardsToDeal: number = 1): Card[] {
-    let dealtCards: Card[] = []
+  dealCard(cardsToDeal: number = 1): PokerCard[] {
+    let dealtCards: PokerCard[] = []
 
     for (let cardsLeftToDeal = cardsToDeal; cardsLeftToDeal > 0 && this.deck.length > 0; cardsLeftToDeal--) {
       dealtCards.push(this.deck.pop()!);
@@ -44,7 +41,7 @@ export class Deck {
     return dealtCards;
   };
 
-  getDeck(): Card[] {
+  getDeck(): PokerCard[] {
     return this.deck;
   }
   getDeckSize(): number {

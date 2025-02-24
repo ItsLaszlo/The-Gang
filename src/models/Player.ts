@@ -1,31 +1,24 @@
-import { Card } from './Card'
-
-type RoundStatus = {
-  Round1: boolean;
-  Round2: boolean;
-  Round3: boolean;
-};
+import { PokerCard } from './PokerCard'
+import { Board, Round } from './Board';
 
 export class Player {
-  private playerId: string;
-  private nickname: string;
-  private hand: Card[];
-  private leader: boolean;
-  private roundStatus: RoundStatus;
+  private playerId: number;
+  public nickname: string;
+  public hand: PokerCard[];
+  public isLeader: boolean;
+  private roundNumber: Round;
+
 
   constructor(nickname: string) {
     this.nickname = nickname;
-    this.playerId = ''
+    this.playerId = 0
     this.hand = []
-    this.leader = false
-    this.roundStatus = { Round1: false, Round2: false, Round3: false }
+    this.isLeader = false
+    this.roundNumber = 0
   }
 
-  isLeader(): boolean {
-    return this.leader
-  }
 
-  getPlayerId(): string {
+  getPlayerId(): number {
     return this.playerId;
   }
 
@@ -33,37 +26,35 @@ export class Player {
     return this.nickname;
   }
 
-  getPlayerHand(): Card[] {
-    return this.hand;
+  getPlayerHand(): string[] {
+    //Todo: Repetitive code maybe have a function to display card names in an array
+    const handCardNames = this.hand.map(card => card.name);
+    return handCardNames
   }
 
-  changeNickname(newNickname: string): void {
-    this.nickname = newNickname
-  }
 
-  addCardToHand(card: Card[]): void {
-    if (this.hand.length == 2) {
-      throw new Error('Hand is at max size, 2. Discard entire hand first.');
-    }
-    this.hand.push(...card)
-  }
-
-  discardHand(): Card[] {
+  discardHand(): PokerCard[] {
     const discard = this.hand
-    this.hand.length = 0
+    this.hand = []
     return discard
+    // Maybe import Board and add immediately to discard pile
   }
 
   setLeader(leaderStatus: boolean): void {
-    this.leader = leaderStatus
+    this.isLeader = leaderStatus
   }
 
-  roundParticipated(round: keyof RoundStatus): void {
-    this.roundStatus[round] = true
+  setPlayerID(id: number): void {
+    this.playerId = id
+  }
+  nextRound(): void {
+    if (this.roundNumber < 4) {
+      this.roundNumber++
+    }
   }
 
-  playerRoundStatus(round: keyof RoundStatus): boolean {
-    return this.roundStatus[round]
+  playerRoundStatus(): Round {
+    return this.roundNumber;
   }
 
 }
